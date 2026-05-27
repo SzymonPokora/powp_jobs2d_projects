@@ -14,10 +14,6 @@ public class SelectChangeVisibleOptionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (controlledWindow.isVisible()) {
-            controlledWindow.setVisible(false);
-        } else {
-            controlledWindow.setVisible(true);
-        }
+        controlledWindow.setVisible(!controlledWindow.isVisible());
     }
 }
