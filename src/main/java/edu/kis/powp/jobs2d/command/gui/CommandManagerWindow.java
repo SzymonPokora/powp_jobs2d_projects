@@ -48,45 +48,19 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         observerListField = new JTextArea("");
         observerListField.setEditable(false);
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
+        configureFullWidthRow(c);
         content.add(observerListField, c);
         updateObserverListField();
 
         currentCommandField = new JTextArea("");
         currentCommandField.setEditable(false);
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
+        configureFullWidthRow(c);
         content.add(currentCommandField, c);
         updateCurrentCommandField();
 
-        JButton btnImportCommands = new JButton("Import command");
-        btnImportCommands.addActionListener((ActionEvent e) -> this.importCommands());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-        content.add(btnImportCommands, c);
-
-        JButton btnClearCommand = new JButton("Clear command");
-        btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-        content.add(btnClearCommand, c);
-
-        JButton btnClearObservers = new JButton("Delete observers");
-        btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-        content.add(btnClearObservers, c);
+        addFullWidthButton(content, c, "Import command", (ActionEvent e) -> this.importCommands());
+        addFullWidthButton(content, c, "Clear command", (ActionEvent e) -> this.clearCommand());
+        addFullWidthButton(content, c, "Delete observers", (ActionEvent e) -> this.deleteObservers());
     }
 
     private void clearCommand() {
@@ -140,6 +114,21 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             observerListString = "No observers loaded";
 
         observerListField.setText(observerListString);
+    }
+
+    private static void configureFullWidthRow(GridBagConstraints c) {
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+    }
+
+    private static void addFullWidthButton(Container content, GridBagConstraints c, String label,
+            java.awt.event.ActionListener listener) {
+        JButton button = new JButton(label);
+        button.addActionListener(listener);
+        configureFullWidthRow(c);
+        content.add(button, c);
     }
 
     @Override

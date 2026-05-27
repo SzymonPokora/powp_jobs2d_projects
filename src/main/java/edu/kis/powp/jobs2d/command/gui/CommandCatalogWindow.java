@@ -49,30 +49,12 @@ public class CommandCatalogWindow extends JFrame implements WindowComponent, Sub
         GridBagConstraints c = new GridBagConstraints();
 
         JScrollPane scrollPane = new JScrollPane(commandList);
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.gridx = 0;
+        configureSingleColumn(c, 1);
         c.gridy = 0;
         content.add(scrollPane, c);
 
-        JButton btnLoadCommand = new JButton("Load");
-        btnLoadCommand.addActionListener((ActionEvent e) -> this.loadSelectedCommand());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.gridx = 0;
-        c.gridy = 1;
-        content.add(btnLoadCommand, c);
-
-        JButton btnAddCommand = new JButton("Add");
-        btnAddCommand.addActionListener((ActionEvent e) -> this.addCurrentCommand());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.gridx = 0;
-        c.gridy = 2;
-        content.add(btnAddCommand, c);
+        addButtonRow(content, c, "Load", 1, (ActionEvent e) -> this.loadSelectedCommand());
+        addButtonRow(content, c, "Add", 2, (ActionEvent e) -> this.addCurrentCommand());
 
         commandCatalog.getChangePublisher().addSubscriber(this);
 
@@ -211,5 +193,21 @@ public class CommandCatalogWindow extends JFrame implements WindowComponent, Sub
         } else {
             this.setVisible(true);
         }
+    }
+
+    private static void configureSingleColumn(GridBagConstraints c, int weightY) {
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = weightY;
+        c.gridx = 0;
+    }
+
+    private static void addButtonRow(Container content, GridBagConstraints c, String label, int gridY,
+            java.awt.event.ActionListener listener) {
+        JButton button = new JButton(label);
+        button.addActionListener(listener);
+        configureSingleColumn(c, 0);
+        c.gridy = gridY;
+        content.add(button, c);
     }
 }
