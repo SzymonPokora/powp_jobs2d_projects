@@ -112,23 +112,19 @@ public class TestJobs2dApp {
         DriverFeature.addDriver(basicCompositeDriver.toString(), basicCompositeDriver);
 
         CoordinateTransformer scale = new ScaleTransformer(2.0, 2.0);
-        VisitableDriver scaledDriver = new TransformingDriver(driver, scale, "Transform: Scaled 2x");
-        DriverFeature.addDriver(scaledDriver.toString(), scaledDriver);
+        VisitableDriver scaledDriver = addTransformingDriver(driver, scale, "Transform: Scaled 2x");
 
         CoordinateTransformer scaleDown = new ScaleTransformer(0.5, 0.5);
-        VisitableDriver scaledDownDriver = new TransformingDriver(driver, scaleDown, "Transform: Scaled 0.5x");
-        DriverFeature.addDriver(scaledDownDriver.toString(), scaledDownDriver);
+        VisitableDriver scaledDownDriver = addTransformingDriver(driver, scaleDown, "Transform: Scaled 0.5x");
 
         CoordinateTransformer flip = new FlipTransformer(false, true);
-        VisitableDriver flippedDriver = new TransformingDriver(driver, flip, "Transform: Flipped Y");
-        DriverFeature.addDriver(flippedDriver.toString(), flippedDriver);
+        VisitableDriver flippedDriver = addTransformingDriver(driver, flip, "Transform: Flipped Y");
 
         CoordinateTransformer rotate = new RotateTransformer(45.0);
-        VisitableDriver rotatedDriver = new TransformingDriver(driver, rotate, "Transform: Rotated 45 degrees");
-        DriverFeature.addDriver(rotatedDriver.toString(), rotatedDriver);
+        VisitableDriver rotatedDriver = addTransformingDriver(driver, rotate, "Transform: Rotated 45 degrees");
 
-        VisitableDriver scaledAndRotatedDriver = new TransformingDriver(scaledDriver, rotate, "Transform: Scaled 2x & Rotated 45");
-        DriverFeature.addDriver(scaledAndRotatedDriver.toString(), scaledAndRotatedDriver);
+        VisitableDriver scaledAndRotatedDriver = addTransformingDriver(scaledDriver, rotate,
+                "Transform: Scaled 2x & Rotated 45");
 
         CompositeDriver chaosCompositeDriver = new CompositeDriver("Chaos Composite Driver");
         chaosCompositeDriver.addDriver(driver);
@@ -136,15 +132,23 @@ public class TestJobs2dApp {
         DriverFeature.addDriver(chaosCompositeDriver.toString(), chaosCompositeDriver);
 
         driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
-        VisitableDriver animatedDriver = new RealTimeDriver(driver, 10, 10, "Real-Time Driver 1x speed");
-        DriverFeature.addDriver(animatedDriver.toString(), animatedDriver);
+        addRealTimeDriver(driver, 10, 10, "Real-Time Driver 1x speed");
+        addRealTimeDriver(driver, 5, 5, "Real-Time Driver 2x speed");
+        addRealTimeDriver(driver, 1, 1, "Real-Time Driver 10x speed");
 
-        animatedDriver = new RealTimeDriver(driver, 5, 5, "Real-Time Driver 2x speed");
-        DriverFeature.addDriver(animatedDriver.toString(), animatedDriver);
+    }
 
-        animatedDriver = new RealTimeDriver(driver, 1, 1, "Real-Time Driver 10x speed");
-        DriverFeature.addDriver(animatedDriver.toString(), animatedDriver);
+    private static VisitableDriver addTransformingDriver(VisitableDriver baseDriver, CoordinateTransformer transformer,
+            String driverName) {
+        VisitableDriver transformedDriver = new TransformingDriver(baseDriver, transformer, driverName);
+        DriverFeature.addDriver(transformedDriver.toString(), transformedDriver);
+        return transformedDriver;
+    }
 
+    private static void addRealTimeDriver(VisitableDriver baseDriver, int refreshDelayMillis, int step,
+            String driverName) {
+        VisitableDriver animatedDriver = new RealTimeDriver(baseDriver, refreshDelayMillis, step, driverName);
+        DriverFeature.addDriver(animatedDriver.toString(), animatedDriver);
     }
 
     /**
