@@ -66,14 +66,10 @@ public class TestJobs2dApp {
         application.addTest("Count current command", new SelectCountCommandsOptionListener());
 
         application.addTest("Check current command bounds", new SelectCheckCanvasBoundsOptionListener());
-        application.addTest("Transform current command: Scale 2x",
-                new SelectTransformCommandOptionListener(new ScaleTransformer(2.0, 2.0), "Scale 2x"));
-        application.addTest("Transform current command: Scale 0.5x",
-                new SelectTransformCommandOptionListener(new ScaleTransformer(0.5, 0.5), "Scale 0.5x"));
-        application.addTest("Transform current command: Rotate 45 degrees",
-                new SelectTransformCommandOptionListener(new RotateTransformer(45.0), "Rotate 45 degrees"));
-        application.addTest("Transform current command: Flip Y",
-                new SelectTransformCommandOptionListener(new FlipTransformer(false, true), "Flip Y"));
+        addTransformCommandTest(application, "Scale 2x", new ScaleTransformer(2.0, 2.0));
+        addTransformCommandTest(application, "Scale 0.5x", new ScaleTransformer(0.5, 0.5));
+        addTransformCommandTest(application, "Rotate 45 degrees", new RotateTransformer(45.0));
+        addTransformCommandTest(application, "Flip Y", new FlipTransformer(false, true));
         application.addTest("FullNameGetter visitor test",
                 new SelectFullNameGetterVisitorTestListener(new FullNameGetterVisitor()));
 
@@ -84,6 +80,12 @@ public class TestJobs2dApp {
                 "Clear recording",
                 new SelectClearRecordingOptionListener()
         );
+    }
+
+    private static void addTransformCommandTest(Application application, String label,
+            CoordinateTransformer transformer) {
+        application.addTest("Transform current command: " + label,
+                new SelectTransformCommandOptionListener(transformer, label));
     }
 
     /**
